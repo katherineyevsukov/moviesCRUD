@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const initialFormValues = {
   id: "",
@@ -11,18 +12,36 @@ const initialFormValues = {
 };
 
 export default function AddMovieForm(props) {
+  console.log(props);
+
   const [formValues, setFormValues] = useState(initialFormValues);
 
   const handleChange = (e) => {
     setFormValues({
-        [e.target.name]: e.target.value
-    })
-  }
+      ...formValues,
+      [e.target.name]: e.target.value,
+    });
+    console.log(formValues);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newMovie = { id: Date.now(), ...formValues };
+    axios
+      .post("http://localhost:5000/api/movies", newMovie)
+      .then((res) => {
+        props.setMovies(res.data);
+        props.history.push("/movies");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div className="col">
       <div className="modal-content">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="modal-header">
             <h4 className="modal-title">Add New Movie</h4>
           </div>

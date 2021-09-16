@@ -62,10 +62,10 @@ const App = (props) => {
               <EditMovieForm setMovies={setMovies}/>
             </Route>
 
-            <Route path="/add">
-              <AddMovieForm />
-            </Route>
-
+            {/* <Route path="/add">
+              <AddMovieForm setMovies={setMovies}/>
+            </Route> */}
+            <Route path='/add' render={props => <AddMovieForm {...props} setMovies={setMovies}/>}  />
             <Route path="/movies/:id">
               <Movie deleteMovie={deleteMovie} addToFavorites={addToFavorites}/>
             </Route>
